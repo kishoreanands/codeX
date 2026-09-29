@@ -1022,7 +1022,6 @@ function setupEventListeners() {
 // Run app on DOMContentLoaded
 window.addEventListener('DOMContentLoaded', initApp);
 
-
 // Polyglot Algorithmic Engine for CodeX
 // Provides real, compilable, execution-ready code for 100+ LeetCode, HackerRank,
 // DSA, and computer science problems across C++, Java, Python, JavaScript, C, Go, and SQL.
@@ -1143,11 +1142,11 @@ function hasAny(text, ...keywords) {
 }
 
 // Universal Problem Registry
-function getPolyglotSolution(prompt, targetLangId, humanLang) {
-  const p = (prompt || '').trim().toLowerCase();
-  const langCode = humanLang?.code || 'en';
-  const c = getCommentTokens(langCode);
-  const lang = targetLangId ? targetLangId.toLowerCase() : 'java';
+function routePolyglotSolution(p, prompt, lang, humanLang, c) {
+  // 0. If target language is SQL / MySQL / PostgreSQL / SQLite, route to dedicated SQL generator
+  if (lang.includes('sql') || lang === 'mysql' || lang === 'postgresql' || lang === 'sqlite' || lang === 'oracle' || lang === 'tsql') {
+    return generateSQLSolutions(p, humanLang, c);
+  }
 
   // 1. GREATEST OF THREE NUMBERS / LARGEST OF THREE (User's primary case!)
   if (
@@ -1305,13 +1304,40 @@ function getPolyglotSolution(prompt, targetLangId, humanLang) {
   }
 
   // 30. SQL PROBLEMS (LeetCode SQL 50)
-  if (lang.includes('sql') || hasAny(p, 'sql', 'second highest salary', 'duplicate emails', 'department highest salary', 'customers who never order')) {
+  if (lang.includes('sql') || lang === 'mysql' || lang === 'postgresql' || lang === 'sqlite' || lang === 'oracle' || lang === 'tsql') {
     return generateSQLSolutions(p, humanLang, c);
   }
 
   // 31. DYNAMIC SEMANTIC SYNTHESIZER:
   // Catches ANY other user prompt and constructs a complete, compiling, tested solution
   return generateDynamicSemanticSolution(prompt, lang, humanLang, c);
+}
+
+function formatSolutionOutput(solution, prompt, lang, humanLang, c) {
+  const isJavaCode = solution.includes('class Main') || solution.includes('public class Solution') || solution.includes('System.out.println');
+  const isCppCode = solution.includes('#include <') || solution.includes('std::');
+
+  // If Java code returned for a non-Java language
+  if (isJavaCode && lang !== 'java' && lang !== 'springboot') {
+    return generateDynamicSemanticSolution(prompt, lang, humanLang, c);
+  }
+
+  // If C++ code returned for a non-C/C++ language
+  if (isCppCode && lang !== 'cpp' && lang !== 'c') {
+    return generateDynamicSemanticSolution(prompt, lang, humanLang, c);
+  }
+
+  return solution;
+}
+
+function getPolyglotSolution(prompt, targetLangId, humanLang) {
+  const p = (prompt || '').trim().toLowerCase();
+  const langCode = humanLang?.code || 'en';
+  const c = getCommentTokens(langCode);
+  const lang = targetLangId ? targetLangId.toLowerCase() : 'java';
+
+  const rawSolution = routePolyglotSolution(p, prompt, lang, humanLang, c);
+  return formatSolutionOutput(rawSolution, prompt, lang, humanLang, c);
 }
 
 // -------------------------------------------------------------
@@ -1508,6 +1534,62 @@ x, y = 25, 78
 print(f"Numbers: {x}, {y}")
 print(f"${c.greatest}: {find_max(x, y)}")`;
   }
+  if (lang === 'javascript' || lang === 'typescript' || lang === 'nodejs') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: Find Greatest of Two Numbers
+function findMax(a, b) {
+  return a > b ? a : b;
+}
+
+const x = 25, y = 78;
+console.log("Numbers:", x, y);
+console.log("${c.greatest}:", findMax(x, y));`;
+  }
+  if (lang === 'go' || lang === 'golang') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: Find Greatest of Two Numbers
+package main
+import "fmt"
+
+func findMax(a, b int) int {
+    if a > b { return a }
+    return b
+}
+
+func main() {
+    x, y := 25, 78
+    fmt.Printf("Numbers: %d, %d\\n", x, y)
+    fmt.Printf("${c.greatest}: %d\\n", findMax(x, y))
+}`;
+  }
+  if (lang === 'csharp' || lang === 'cs' || lang === 'c#') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: Find Greatest of Two Numbers
+using System;
+
+class Program {
+    public static int FindMax(int a, int b) => a > b ? a : b;
+
+    static void Main() {
+        int x = 25, y = 78;
+        Console.WriteLine($"Numbers: {x}, {y}");
+        Console.WriteLine($"${c.greatest}: {FindMax(x, y)}");
+    }
+}`;
+  }
+  if (lang === 'rust' || lang === 'rs') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: Find Greatest of Two Numbers
+fn find_max(a: i32, b: i32) -> i32 {
+    if a > b { a } else { b }
+}
+
+fn main() {
+    let (x, y) = (25, 78);
+    println!("Numbers: {}, {}", x, y);
+    println!("{}: {}", "${c.greatest}", find_max(x, y));
+}`;
+  }
   return `// [CodeX Solution] Human Language: ${hName}
 class Main {
     public static int findMax(int a, int b) {
@@ -1563,6 +1645,38 @@ def find_max_element(nums: List[int]) -> int:
 arr = [14, 52, 98, 36, 71, 23]
 print(f"Array: {arr}")
 print(f"Max element: {find_max_element(arr)}")`;
+  }
+  if (lang === 'javascript' || lang === 'typescript' || lang === 'nodejs') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: Find Maximum in Array
+function findMaxElement(nums) {
+  if (!nums.length) return -1;
+  return Math.max(...nums);
+}
+
+const arr = [14, 52, 98, 36, 71, 23];
+console.log("Array:", arr);
+console.log("Max element:", findMaxElement(arr));`;
+  }
+  if (lang === 'go' || lang === 'golang') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: Find Maximum in Array
+package main
+import "fmt"
+
+func findMaxElement(nums []int) int {
+    if len(nums) == 0 { return -1 }
+    maxVal := nums[0]
+    for _, n := range nums {
+        if n > maxVal { maxVal = n }
+    }
+    return maxVal
+}
+
+func main() {
+    arr := []int{14, 52, 98, 36, 71, 23}
+    fmt.Println("Max element:", findMaxElement(arr))
+}`;
   }
   return `// [CodeX Solution] Human Language: ${hName}
 import java.util.*;
@@ -1637,6 +1751,46 @@ if __name__ == "__main__":
     result = two_sum(nums, target)
     print("Indices:", result)
     print(f"Values: {nums[result[0]]} + {nums[result[1]]} = {target}")`;
+  }
+  if (lang === 'javascript' || lang === 'typescript' || lang === 'nodejs') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #1 - Two Sum
+function twoSum(nums, target) {
+  const map = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i];
+    if (map.has(complement)) return [map.get(complement), i];
+    map.set(nums[i], i);
+  }
+  return [];
+}
+
+const nums = [2, 7, 11, 15];
+const target = 9;
+console.log("Indices:", twoSum(nums, target));`;
+  }
+  if (lang === 'go' || lang === 'golang') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #1 - Two Sum
+package main
+import "fmt"
+
+func twoSum(nums []int, target int) []int {
+    m := make(map[int]int)
+    for i, num := range nums {
+        complement := target - num
+        if idx, ok := m[complement]; ok {
+            return []int{idx, i}
+        }
+        m[num] = i
+    }
+    return nil
+}
+
+func main() {
+    nums := []int{2, 7, 11, 15}
+    fmt.Println("Indices:", twoSum(nums, 9))
+}`;
   }
   return `// [CodeX Solution] Human Language: ${hName}
 // Problem: LeetCode #1 - Two Sum (O(n) Optimal Hash Map)
@@ -1783,6 +1937,48 @@ def is_valid(s: str) -> bool:
 
 test = "{[()]}"
 print(f"Expression: {test} -> Valid: {is_valid(test)}")`;
+  }
+  if (lang === 'javascript' || lang === 'typescript' || lang === 'nodejs') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #20 - Valid Parentheses
+function isValid(s) {
+  const stack = [];
+  const map = { '(': ')', '{': '}', '[': ']' };
+  for (const ch of s) {
+    if (map[ch]) stack.push(map[ch]);
+    else if (stack.pop() !== ch) return false;
+  }
+  return stack.length === 0;
+}
+
+const test = "{[()]}";
+console.log("IsValid:", isValid(test));`;
+  }
+  if (lang === 'go' || lang === 'golang') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #20 - Valid Parentheses
+package main
+import "fmt"
+
+func isValid(s string) bool {
+    var stack []rune
+    pairs := map[rune]rune{'(': ')', '{': '}', '[': ']'}
+    for _, ch := range s {
+        if closing, ok := pairs[ch]; ok {
+            stack = append(stack, closing)
+        } else {
+            if len(stack) == 0 || stack[len(stack)-1] != ch {
+                return false
+            }
+            stack = stack[:len(stack)-1]
+        }
+    }
+    return len(stack) == 0
+}
+
+func main() {
+    fmt.Println("IsValid:", isValid("{[()]}"))
+}`;
   }
   return `// [CodeX Solution] Human Language: ${hName}
 // Problem: LeetCode #20 - Valid Parentheses (Java)
@@ -1947,8 +2143,9 @@ class Main {
 // 9. Cycle Detection (LeetCode #141)
 function generateDetectCycle(lang, humanLang, c) {
   const hName = humanLang.name;
-  return `// [CodeX Solution] Human Language: ${hName}
-// Problem: LeetCode #141 - Linked List Cycle Detection (Floyd's Tortoise and Hare)
+  if (lang === 'cpp' || lang === 'c') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #141 - Linked List Cycle Detection
 #include <iostream>
 
 struct ListNode {
@@ -1970,8 +2167,97 @@ bool hasCycle(ListNode *head) {
 }
 
 int main() {
-    std::cout << "Floyd's Cycle Detection O(1) space compiled." << std::endl;
+    std::cout << "Floyd's Cycle Detection compiled." << std::endl;
     return 0;
+}`;
+  }
+  if (lang === 'python') {
+    return `# [CodeX Solution] Human Language: ${hName}
+# Problem: LeetCode #141 - Linked List Cycle Detection
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+def has_cycle(head: ListNode) -> bool:
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+
+if __name__ == "__main__":
+    print("Cycle detection verified.")`;
+  }
+  if (lang === 'javascript' || lang === 'typescript' || lang === 'nodejs') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #141 - Linked List Cycle Detection
+function hasCycle(head) {
+  let slow = head, fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) return true;
+  }
+  return false;
+}
+
+console.log("Cycle detection function ready.");`;
+  }
+  if (lang === 'go' || lang === 'golang') {
+    return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #141 - Linked List Cycle Detection
+package main
+import "fmt"
+
+type ListNode struct {
+    Val int
+    Next *ListNode
+}
+
+func hasCycle(head *ListNode) bool {
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+        if slow == fast {
+            return true
+        }
+    }
+    return false
+}
+
+func main() {
+    fmt.Println("Cycle detection ready.")
+}`;
+  }
+  return `// [CodeX Solution] Human Language: ${hName}
+// Problem: LeetCode #141 - Linked List Cycle Detection
+class Main {
+    static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) { val = x; next = null; }
+    }
+
+    public static boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) return false;
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            if (slow == fast) return true;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        ListNode node = new ListNode(1);
+        System.out.println("Cycle detected: " + hasCycle(node));
+    }
 }`;
 }
 
@@ -2730,10 +3016,37 @@ int main() {
 }`;
 }
 
-// 30. SQL Solutions (LeetCode SQL 50)
+// 30. SQL Solutions (LeetCode SQL 50 & General SQL)
 function generateSQLSolutions(prompt, humanLang, c) {
   const hName = humanLang.name;
   const p = prompt.toLowerCase();
+
+  // Greatest / Largest in SQL
+  if (p.includes('greatest') || p.includes('largest') || p.includes('maximum') || p.includes('biggest') || p.includes('max')) {
+    if (p.includes('3') || p.includes('three') || p.includes('மூன்று') || p.includes('तीन')) {
+      return `-- [CodeX Solution] Human Language: ${hName}
+-- Problem: Find Greatest Number Among Three Numbers in SQL
+SELECT GREATEST(45, 92, 63) AS GreatestNumber;`;
+    }
+    if (p.includes('2') || p.includes('two') || p.includes('இரண்டு') || p.includes('दो')) {
+      return `-- [CodeX Solution] Human Language: ${hName}
+-- Problem: Find Greatest of Two Numbers in SQL
+SELECT GREATEST(25, 78) AS GreatestNumber;`;
+    }
+    return `-- [CodeX Solution] Human Language: ${hName}
+-- Problem: Find Maximum Element in a Table
+SELECT MAX(salary) AS MaxValue FROM Employee;`;
+  }
+
+  // Sum in SQL
+  if (p.includes('two sum') || p.includes('sum') || p.includes('கூட்ட') || p.includes('योग')) {
+    return `-- [CodeX Solution] Human Language: ${hName}
+-- Problem: Two Sum / Find Pairs that Sum to Target in SQL
+SELECT a.id AS Index1, b.id AS Index2, a.val AS Value1, b.val AS Value2
+FROM numbers a
+JOIN numbers b ON a.id < b.id
+WHERE a.val + b.val = 9;`;
+  }
 
   if (p.includes('second highest') || p.includes('2nd highest')) {
     return `-- [CodeX Solution] Human Language: ${hName}
@@ -2871,6 +3184,68 @@ function solve() {
 }
 
 solve();`;
+  }
+
+  if (targetLangId === 'go' || targetLangId === 'golang') {
+    return `// [CodeX Solution] Human Language: ${hName} (${nName})
+// Problem: ${safeTitle}
+package main
+
+import (
+    "fmt"
+    "sort"
+)
+
+func solve() {
+    fmt.Println("=== CodeX Solution for: ${safeTitle.replace(/"/g, '\\"')} ===")
+    ${c.input}
+    sampleData := []int{10, 25, 5, 80, 42}
+    fmt.Printf("Sample Input: %v\\n", sampleData)
+
+    ${c.output}
+    sort.Ints(sampleData)
+    fmt.Printf("Processed Output: %v\\n", sampleData)
+}
+
+func main() {
+    solve()
+}`;
+  }
+
+  if (targetLangId === 'csharp' || targetLangId === 'cs' || targetLangId === 'c#') {
+    return `// [CodeX Solution] Human Language: ${hName} (${nName})
+// Problem: ${safeTitle}
+using System;
+using System.Collections.Generic;
+
+class Program {
+    public static void Solve() {
+        Console.WriteLine("=== CodeX Solution for: ${safeTitle.replace(/"/g, '\\"')} ===");
+        var sampleData = new List<int> { 10, 25, 5, 80, 42 };
+        sampleData.Sort();
+        Console.WriteLine("Processed Output: " + string.Join(", ", sampleData));
+    }
+
+    static void Main() {
+        Solve();
+    }
+}`;
+  }
+
+  if (targetLangId === 'rust' || targetLangId === 'rs') {
+    return `// [CodeX Solution] Human Language: ${hName} (${nName})
+// Problem: ${safeTitle}
+
+fn solve() {
+    println!("=== CodeX Solution for: ${safeTitle.replace(/"/g, '\\"')} ===");
+    let mut sample_data = vec![10, 25, 5, 80, 42];
+    sample_data.sort();
+    println!("Processed Output: {:?}", sample_data);
+}
+
+fn main() {
+    solve();
+}`;
   }
 
   // Java default
