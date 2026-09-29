@@ -287,6 +287,45 @@ CREATE INDEX idx_items_status ON items(status);
 INSERT INTO app_users (username, email) VALUES ('codex_user', 'admin@codex.dev') ON CONFLICT DO NOTHING;
 INSERT INTO items (user_id, title, description) VALUES (1, 'Initial Record', 'Created via CodeX');`;
 
+    const fileList = [
+      {
+        tag: 'frontend',
+        name: 'App.tsx',
+        extension: '.tsx',
+        monacoId: 'typescript',
+        language: 'typescript',
+        content: frontendCode,
+        code: frontendCode
+      },
+      {
+        tag: 'backend',
+        name: 'server.js',
+        extension: '.js',
+        monacoId: 'javascript',
+        language: 'javascript',
+        content: backendCode,
+        code: backendCode
+      },
+      {
+        tag: 'database',
+        name: 'schema.sql',
+        extension: '.sql',
+        monacoId: 'sql',
+        language: 'sql',
+        content: databaseCode,
+        code: databaseCode
+      },
+      {
+        tag: 'humancode',
+        name: 'Main.java',
+        extension: '.java',
+        monacoId: 'java',
+        language: 'java',
+        content: generateSingleFileCode(prompt, { id: 'java', name: 'Java', extension: '.java' }, humanLang, 'main'),
+        code: generateSingleFileCode(prompt, { id: 'java', name: 'Java', extension: '.java' }, humanLang, 'main')
+      }
+    ];
+
     return {
       success: true,
       mode: 'fullstack',
@@ -295,44 +334,8 @@ INSERT INTO items (user_id, title, description) VALUES (1, 'Initial Record', 'Cr
       codeLanguage: codeLang,
       isExperimental,
       isAutoDetected,
-      files: [
-        {
-          tag: 'frontend',
-          name: 'App.tsx',
-          extension: '.tsx',
-          monacoId: 'typescript',
-          language: 'typescript',
-          content: frontendCode,
-          code: frontendCode
-        },
-        {
-          tag: 'backend',
-          name: 'server.js',
-          extension: '.js',
-          monacoId: 'javascript',
-          language: 'javascript',
-          content: backendCode,
-          code: backendCode
-        },
-        {
-          tag: 'database',
-          name: 'schema.sql',
-          extension: '.sql',
-          monacoId: 'sql',
-          language: 'sql',
-          content: databaseCode,
-          code: databaseCode
-        },
-        {
-          tag: 'humancode',
-          name: 'Main.java',
-          extension: '.java',
-          monacoId: 'java',
-          language: 'java',
-          content: generateSingleFileCode(prompt, { id: 'java', name: 'Java', extension: '.java' }, humanLang, 'main'),
-          code: generateSingleFileCode(prompt, { id: 'java', name: 'Java', extension: '.java' }, humanLang, 'main')
-        }
-      ],
+      files: fileList,
+      taggedFiles: fileList,
       explanation: explain
         ? `CodeX generated a production-grade full-stack architecture with separate Frontend, Backend, Database, and Human Code files adhering to instructions in ${humanLang.name}.`
         : null
@@ -359,6 +362,7 @@ INSERT INTO items (user_id, title, description) VALUES (1, 'Initial Record', 'Cr
     isAutoDetected,
     fileName,
     content: singleFileContent,
+    code: singleFileContent,
     explanation: explain
       ? `Explanation for: "${prompt}"\nThis code is implemented in ${codeLang.name} with clean structure and comments in ${humanLang.name} (${humanLang.nativeName}).`
       : null
