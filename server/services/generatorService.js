@@ -1,5 +1,6 @@
 import { languageService } from './languageService.js';
 import { generateJavaMain } from './javaTemplateEngine.js';
+import { getPolyglotSolution } from './polyglotEngine.js';
 
 // Auto-detection dictionary & script analyzer
 function detectHumanLanguage(text) {
@@ -335,67 +336,8 @@ INSERT INTO items (user_id, title, description) VALUES (1, 'Initial Record', 'Cr
   };
 }
 
-function generateSingleFileCode(prompt, codeLang, humanLang, format = 'main') {
-  const langCode = humanLang.code;
-  const cInit = getCommentInLanguage(langCode, 'init');
-  const cMain = getCommentInLanguage(langCode, 'main');
-  const cResp = getCommentInLanguage(langCode, 'resp');
-  const cErr = getCommentInLanguage(langCode, 'err');
-
-  const id = codeLang.id;
-
-  if (id === 'python' || id === 'python-ai' || id === 'django' || id === 'flask' || id === 'fastapi') {
-    return `# -*- coding: utf-8 -*-
-"""
-CodeX Solution: ${prompt}
-Human Language: ${humanLang.name} (${humanLang.nativeName})
-"""
-
-import sys
-import logging
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
-
-${cInit.replace('//', '#')}
-class SolutionService:
-    def __init__(self, name: str = "CodeX"):
-        self.name = name
-        self.cache = {}
-
-    ${cMain.replace('//', '#')}
-    def execute(self, payload: dict) -> dict:
-        try:
-            if not payload:
-                raise ValueError("Payload cannot be empty")
-            
-            # Process calculation / request logic
-            result = {
-                "status": "success",
-                "engine": self.name,
-                "input_summary": str(payload),
-                "processed": True
-            }
-            ${cResp.replace('//', '#')}
-            logging.info(f"Execution completed: {result['status']}")
-            return result
-        except Exception as exc:
-            ${cErr.replace('//', '#')}
-            logging.error(f"Error encountered: {exc}")
-            raise
-
-def main():
-    service = SolutionService()
-    test_input = {"query": "${prompt.replace(/"/g, '\\"')}"}
-    output = service.execute(test_input)
-    print("Output:", output)
-
-if __name__ == "__main__":
-    main()`;
-  }
-
-  if (id === 'java' || id === 'springboot') {
-    if (format === 'enterprise') {
-      return `/**
+function generateEnterpriseJava(prompt, codeLang, humanLang, cInit, cMain, cResp, cErr) {
+  return `/**
  * CodeX Solution: ${prompt}
  * Software Language: Java (Java 17 LTS / OpenJDK)
  * Human Language: ${humanLang.name} (${humanLang.nativeName})
@@ -440,124 +382,29 @@ public class Solution {
         System.out.println("Result: " + app.process(input));
     }
 }`;
-    }
-
-    return generateJavaMain(prompt, humanLang);
-  }
-
-  if (id === 'cpp' || id === 'c') {
-    return `/**
- * CodeX Solution: ${prompt}
- * Language: ${codeLang.name}
- * Explanation Language: ${humanLang.name} (${humanLang.nativeName})
- */
-#include <iostream>
-#include <string>
-#include <vector>
-#include <memory>
-
-${cInit}
-class SolutionEngine {
-public:
-    SolutionEngine() = default;
-
-    ${cMain}
-    std::string processRequest(const std::string& query) {
-        if (query.empty()) {
-            ${cErr}
-            return "Error: Empty Query";
-        }
-        ${cResp}
-        return "SUCCESS: Processed query -> " + query;
-    }
-};
-
-int main() {
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(NULL);
-
-    SolutionEngine engine;
-    std::string query = "${prompt.replace(/"/g, '\\"')}";
-    std::string outcome = engine.processRequest(query);
-
-    std::cout << outcome << std::endl;
-    return 0;
-}`;
-  }
-
-  if (id === 'javascript' || id === 'typescript' || id === 'nodejs' || id === 'express') {
-    return `/**
- * CodeX Solution: ${prompt}
- * Human Language: ${humanLang.name} (${humanLang.nativeName})
- */
-
-${cInit}
-class CodeXEngine {
-  constructor(options = {}) {
-    this.options = options;
-  }
-
-  ${cMain}
-  async execute(input) {
-    try {
-      if (!input) throw new Error('Missing input parameter');
-
-      ${cResp}
-      return {
-        success: true,
-        query: "${prompt.replace(/"/g, '\\"')}",
-        processedAt: new Date().toISOString()
-      };
-    } catch (err) {
-      ${cErr}
-      console.error('Execution failure:', err.message);
-      throw err;
-    }
-  }
 }
 
-// Module invocation
-const engine = new CodeXEngine();
-engine.execute({ sample: true }).then(console.log);
-export default CodeXEngine;`;
+function generateSingleFileCode(prompt, codeLang, humanLang, format = 'main') {
+  const langCode = humanLang.code;
+  const cInit = getCommentInLanguage(langCode, 'init');
+  const cMain = getCommentInLanguage(langCode, 'main');
+  const cResp = getCommentInLanguage(langCode, 'resp');
+  const cErr = getCommentInLanguage(langCode, 'err');
+
+  const id = codeLang.id;
+
+  if ((id === 'java' || id === 'springboot') && format === 'enterprise') {
+    return generateEnterpriseJava(prompt, codeLang, humanLang, cInit, cMain, cResp, cErr);
   }
 
-  if (id === 'mysql' || id === 'postgresql' || id === 'sqlite' || id === 'oracle' || id === 'tsql') {
-    return `-- CodeX Database Solution: ${prompt}
--- ${cInit.replace('//', '')}
-CREATE TABLE IF NOT EXISTS records (
-    id SERIAL PRIMARY KEY,
-    payload TEXT NOT NULL,
-    status VARCHAR(50) DEFAULT 'PROCESSED',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- ${cMain.replace('//', '')}
-INSERT INTO records (payload, status)
-VALUES ('${prompt.replace(/'/g, "''")}', 'ACTIVE');
-
--- ${cResp.replace('//', '')}
-SELECT id, payload, status, created_at
-FROM records
-ORDER BY created_at DESC
-LIMIT 10;`;
+  // Check JavaTemplateEngine for specialized Java generation
+  if (id === 'java' || id === 'springboot') {
+    const javaContent = generateJavaMain(prompt, humanLang);
+    if (!javaContent.includes('class SolutionEngine') && !javaContent.includes('Process Unit 1 - Initialized')) {
+      return javaContent;
+    }
   }
 
-  // Default clean commented template for any other language
-  const commentPrefix = (id === 'bash' || id === 'powershell' || id === 'ruby' || id === 'perl' || id === 'r-lang') ? '#' : '//';
-  return `${commentPrefix} CodeX Solution: ${prompt}
-${commentPrefix} Software Language: ${codeLang.name} (${codeLang.extension})
-${commentPrefix} Human Language: ${humanLang.name} (${humanLang.nativeName})
-${cInit.replace('//', commentPrefix)}
-${commentPrefix} Production implementation:
-
-${cMain.replace('//', commentPrefix)}
-function runCodeXSolution() {
-    ${commentPrefix} Execute core logic for: ${prompt.replace(/[\r\n]+/g, ' ')}
-    ${cResp.replace('//', commentPrefix)}
-    return true;
-}
-
-runCodeXSolution();
-`;
+  // Use the Polyglot Algorithmic Engine for full LeetCode/HackerRank/DSA coverage across all languages
+  return getPolyglotSolution(prompt, id, humanLang);
 }

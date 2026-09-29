@@ -27,6 +27,8 @@ public class TestJavaCompilation {
             "Fibonacci series up to 10 terms",
             "String reverse and palindrome check",
             "Find largest element in array",
+            "Greatest number among three numbers",
+            "3 எண்களில் பெரிய எண்",
             "Swap two numbers without third variable",
             "Check leap year",
             "Armstrong number check",

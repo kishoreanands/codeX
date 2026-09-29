@@ -282,8 +282,35 @@ class Main {
 }""", desc);
         }
 
+        // 9a. Greatest / Largest of 3 Numbers
+        if (containsAny(lower, "greatest number in 3", "greatest of 3", "largest of 3", "maximum of 3", "biggest of 3", "3 number greatest", "3 number largest", "மூன்று எண்", "3 எண்களில் பெரிய", "तीन संख्याओं में सबसे बड़ी", "3 సంఖ్యలలో పెద్దది") ||
+            (containsAny(lower, "greatest", "largest", "maximum") && containsAny(lower, "3 number", "three number", "3 numbers", "three numbers"))) {
+            return header + """
+// Find the Greatest Number Among Three Numbers
+import java.util.*;
+
+class Main {
+
+    public static int findGreatest(int a, int b, int c) {
+        if (a >= b && a >= c) return a;
+        if (b >= a && b >= c) return b;
+        return c;
+    }
+
+    public static void main(String[] args) {
+        int num1 = 45;
+        int num2 = 92;
+        int num3 = 63;
+
+        System.out.println("Numbers: " + num1 + ", " + num2 + ", " + num3);
+        int greatest = findGreatest(num1, num2, num3);
+        System.out.println("Greatest Number: " + greatest);
+    }
+}""";
+        }
+
         // 9. Largest / Maximum of Numbers or Array
-        if (containsAny(lower, "largest", "maximum", "max of", "biggest", "பெரிய", "மீப்பெரு", "सबसे बड़ा", "గరిష్ట", "أكبر")) {
+        if (containsAny(lower, "greatest", "largest", "maximum", "max of", "biggest", "பெரிய", "மீப்பெரு", "सबसे बड़ा", "గరిష్ట", "أكبر")) {
             String desc = getComment(langCode, "maxDesc", "// Find the Largest Element");
             return header + String.format("""
 %s
