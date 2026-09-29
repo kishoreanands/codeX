@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeX - Multilingual AI Code Assistant</title>
+  <meta name="description" content="CodeX: Next-generation multilingual AI code generation supporting 130+ human languages and 100+ software languages with dynamic prompt synthesis and RTL support.">
+  
+  <!-- Modern Fonts & Noto Sans Family -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Hebrew:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans:wght@400;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Prism.js for Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-section">
+        <div class="brand-logo" id="brand-logo">⚡</div>
+        <div class="brand-titles">
+          <h1>CodeX</h1>
+          <div class="tagline">
+            <span>Polyglot AI Code Platform</span>
+            <span class="brand-tag">v2.0 Polyglot</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="stat-chip" id="chip-human-count">
+          <span>🌐 Human:</span> <strong id="human-count-val">147</strong>
+        </div>
+        <div class="stat-chip" id="chip-code-count">
+          <span>💻 Code:</span> <strong id="code-count-val">100</strong>
+        </div>
+        <button class="btn-theme-toggle" id="btn-theme-toggle" title="Toggle Black / White Background">
+          <span id="theme-icon">◑</span>
+          <span id="theme-label">B&W: Dark BG</span>
+        </button>
+        <button class="btn-admin" id="btn-open-admin">
+          <span>⚙️</span>
+          <span>Add Language</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="main-wrapper">
+    <div class="workspace-grid">
+      
+      <!-- LEFT PANEL: HUMAN INPUT -->
+      <section class="panel-card" id="input-panel">
+        <div class="panel-header">
+          <div class="bar-top">
+            <span class="panel-label">
+              <span>🗣️</span> Input & Explanation Language
+            </span>
+            <span class="status-badge" id="human-active-badge">English (en)</span>
+          </div>
+
+          <!-- Top 3 Recent Tabs + Auto Detect + Searchable Dropdown -->
+          <div class="lang-selector-bar">
+            <button class="lang-tab" id="tab-human-auto" data-code="auto">
+              <span>✨ Detect language</span>
+            </button>
+            <div id="human-recent-tabs-container" style="display: contents;">
+              <!-- Populated dynamically with top 3 recent languages -->
+            </div>
+            <button class="btn-open-dropdown" id="btn-toggle-human-dropdown">
+              <span id="human-selected-label">More (147)</span>
+              <span>▾</span>
+            </button>
+          </div>
+
+          <!-- Human Language Search Popover -->
+          <div class="dropdown-popover" id="human-dropdown-popover">
+            <div class="dropdown-search-box">
+              <span>🔍</span>
+              <input type="text" class="search-input" id="human-search-input" placeholder="Search 147+ human languages, native script, or region...">
+            </div>
+            <div class="dropdown-list-content" id="human-dropdown-list">
+              <!-- Populated dynamically by region -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Textarea with dynamic RTL / LTR -->
+        <div class="input-body-container" id="input-body-box">
+          <textarea 
+            id="prompt-input" 
+            class="prompt-textarea" 
+            placeholder="Describe the code you want to build in any human language (e.g. தமிழ், हिन्दी, English, Español, العربية, 日本語)..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <!-- Quick Prompt Suggestions -->
+        <div class="prompt-chips-bar" id="prompt-chips-bar">
+          <span class="chips-label">⚡ Quick:</span>
+          <button class="chip-item" data-prompt="TreeSet collection in Java" data-lang="en">TreeSet</button>
+          <button class="chip-item" data-prompt="இரண்டு எண்களை கூட்ட ஜாவா நிரல்" data-lang="ta">Add 2 (தமிழ்)</button>
+          <button class="chip-item" data-prompt="दो संख्याओं का योग जावा में" data-lang="hi">Add 2 (हिन्दी)</button>
+          <button class="chip-item" data-prompt="Binary Search Tree implementation" data-lang="en">BST</button>
+          <button class="chip-item" data-prompt="Fibonacci series program" data-lang="en">Fibonacci</button>
+        </div>
+
+        <!-- Input Footer & Actions -->
+        <div class="input-footer">
+          <div class="tools-left">
+            <button class="btn-tool" id="btn-speech" title="Voice Input (Web Speech API)">
+              <span id="speech-icon">🎤</span>
+            </button>
+            <label class="toggle-fullstack" title="Generate separate Frontend, Backend, and Database files">
+              <input type="checkbox" id="check-fullstack">
+              <span>Full-Stack Mode</span>
+            </label>
+            <label class="toggle-fullstack" title="Include architectural explanation">
+              <input type="checkbox" id="check-explain">
+              <span>Explain</span>
+            </label>
+          </div>
+          <button class="btn-generate" id="btn-generate">
+            <span>Generate Code</span>
+            <span>➔</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL: SOFTWARE OUTPUT -->
+      <section class="panel-card" id="output-panel">
+        <div class="panel-header">
+          <div class="bar-top">
+            <span class="panel-label output-label">
+              <span>💻</span> Output Software Language
+            </span>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <span class="status-badge" id="code-active-badge">Java (.java)</span>
+            </div>
+          </div>
+
+          <!-- Top 4 Default Tabs (Java, Python, C++, SQL) + Searchable Dropdown -->
+          <div class="lang-selector-bar">
+            <div id="code-top-tabs-container" style="display: contents;">
+              <!-- Populated dynamically with top 4 languages -->
+            </div>
+            <button class="btn-open-dropdown" id="btn-toggle-code-dropdown">
+              <span id="code-selected-label">All Categories (100)</span>
+              <span>▾</span>
+            </button>
+          </div>
+
+          <!-- Code Language Search Popover (Grouped by Category) -->
+          <div class="dropdown-popover" id="code-dropdown-popover">
+            <div class="dropdown-search-box">
+              <span>🔍</span>
+              <input type="text" class="search-input" id="code-search-input" placeholder="Search 100+ software languages, extensions, or categories...">
+            </div>
+            <div class="dropdown-list-content" id="code-dropdown-list">
+              <!-- Populated dynamically grouped by category -->
+            </div>
+          </div>
+
+          <!-- Java Code Format Selector -->
+          <div class="code-format-bar" id="code-format-bar">
+            <span class="format-label">Code Format:</span>
+            <div class="format-toggle-group">
+              <button class="btn-format active" id="btn-format-main" data-format="main" title="Standard class Main with import java.util.*">class Main</button>
+              <button class="btn-format" id="btn-format-enterprise" data-format="enterprise" title="Enterprise Service Pattern with class Solution">class Solution</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output Code Body -->
+        <div class="output-body-container">
+          <!-- Multi-file tabs for fullstack mode -->
+          <div class="file-tabs-bar" id="file-tabs-bar" style="display: none;">
+            <button class="file-tab active" data-file-tag="frontend">
+              <span>⚛️</span> App.tsx (Frontend)
+            </button>
+            <button class="file-tab" data-file-tag="backend">
+              <span>🟩</span> BackendApplication.java (Backend)
+            </button>
+            <button class="file-tab" data-file-tag="database">
+              <span>🗄️</span> schema.sql (Database)
+            </button>
+            <button class="file-tab" data-file-tag="humancode">
+              <span>🗣️</span> Main.java (Human Code)
+            </button>
+          </div>
+
+          <!-- Code Viewer -->
+          <div class="code-viewer-wrapper" id="code-viewer-wrapper">
+            <pre><code class="language-java code-block" id="code-display">// [CodeX Polyglot AI Code Platform]
+// Ready to generate production code across 147+ human languages and 100+ software languages.
+// Select your preferred human and software languages, enter your prompt, and click 'Generate Code'.
+// In Full-Stack Mode, CodeX generates 4 coordinated modules:
+// 1. Frontend (App.tsx)
+// 2. Backend (BackendApplication.java)
+// 3. Database (schema.sql)
+// 4. Human Code (Main.java - Algorithm & Business Logic in Human Language)
+
+import java.util.*;
+
+class Main {
+
+    public static void main(String[] args) {
+        System.out.println("CodeX: Ready for code generation.");
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Output Footer & Action Buttons -->
+        <div class="output-footer">
+          <div id="file-info-label" style="font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-code);">
+            Main.java
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn-action" id="btn-copy">
+              <span>📋</span>
+              <span id="copy-text">Copy Code</span>
+            </button>
+            <button class="btn-action" id="btn-download">
+              <span>⬇️</span>
+              <span id="download-text">Download File</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- System Prompt Dynamic Inspector -->
+    <div class="prompt-inspector-bar">
+      <button class="inspector-toggle" id="btn-toggle-inspector">
+        <span>🤖 Dynamic System Prompt Builder Inspector</span>
+        <span id="inspector-arrow">▾</span>
+      </button>
+      <div class="inspector-body" id="inspector-content">
+        You are CodeX, an expert Python developer. The user writes in English (English). Understand the request in that language and generate clean, commented, production-ready Python code. Write code comments in English (English). Return only code inside one code block, unless the user asks for an explanation.
+      </div>
+    </div>
+  </main>
+
+  <!-- Admin Modal: Add Language Without Code Changes -->
+  <div class="modal-overlay" id="admin-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Extensibility: Add New Language</h3>
+        <button class="btn-close-modal" id="btn-close-admin">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-tabs">
+          <button class="modal-tab-btn active" id="tab-add-human">Add Human Language</button>
+          <button class="modal-tab-btn" id="tab-add-code">Add Software Language</button>
+        </div>
+
+        <!-- Form 1: Add Human Language -->
+        <form id="form-add-human">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="new-human-code">ISO Code (e.g. sa, eo, haw)</label>
+              <input type="text" class="form-control" id="new-human-code" placeholder="e.g. sa" required>
+            </div>
+            <div class="form-group">
+              <label for="new-human-name">Language Name (English)</label>
+              <input type="text" class="form-control" id="new-human-name" placeholder="e.g. Sanskrit" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="new-human-native">Native Name (Script)</label>
+              <input type="text" class="form-control" id="new-human-native" placeholder="e.g. संस्कृतम्" required>
+            </div>
+            <div class="form-group">
+              <label for="new-human-script">Script</label>
+              <input type="text" class="form-control" id="new-human-script" placeholder="e.g. Devanagari" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="new-human-direction">Direction</label>
+              <select class="form-control" id="new-human-direction">
+                <option value="ltr">LTR (Left to Right)</option>
+                <option value="rtl">RTL (Right to Left: Arabic, Hebrew, Urdu...)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="new-human-region">Region Group</label>
+              <select class="form-control" id="new-human-region">
+                <option value="Indian">Indian</option>
+                <option value="European">European</option>
+                <option value="Asian">Asian</option>
+                <option value="Middle Eastern">Middle Eastern</option>
+                <option value="African">African</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer" style="padding: 1rem 0 0 0; background: transparent;">
+            <button type="submit" class="btn-generate">Save to humanLanguages.json</button>
+          </div>
+        </form>
+
+        <!-- Form 2: Add Software Language -->
+        <form id="form-add-code" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="new-code-id">Language ID (lowercase)</label>
+              <input type="text" class="form-control" id="new-code-id" placeholder="e.g. mojo" required>
+            </div>
+            <div class="form-group">
+              <label for="new-code-name">Display Name</label>
+              <input type="text" class="form-control" id="new-code-name" placeholder="e.g. Mojo" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="new-code-ext">Extension (with leading dot)</label>
+              <input type="text" class="form-control" id="new-code-ext" placeholder="e.g. .mojo" required>
+            </div>
+            <div class="form-group">
+              <label for="new-code-category">Category</label>
+              <select class="form-control" id="new-code-category">
+                <option value="General purpose">General purpose</option>
+                <option value="Frontend">Frontend</option>
+                <option value="Backend/frameworks">Backend/frameworks</option>
+                <option value="Database">Database</option>
+                <option value="Mobile">Mobile</option>
+                <option value="Scripting/DevOps">Scripting/DevOps</option>
+                <option value="Data/AI/ML">Data/AI/ML</option>
+                <option value="Systems/embedded">Systems/embedded</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="new-code-monaco">Monaco/Prism ID</label>
+              <input type="text" class="form-control" id="new-code-monaco" placeholder="e.g. python" required>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;">
+              <input type="checkbox" id="new-code-runnable" checked style="width: 18px; height: 18px;">
+              <label for="new-code-runnable" style="margin-bottom: 0;">Runnable execution supported</label>
+            </div>
+          </div>
+          <div class="modal-footer" style="padding: 1rem 0 0 0; background: transparent;">
+            <button type="submit" class="btn-generate">Save to codeLanguages.json</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Prism.js Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

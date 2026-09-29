@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Java Compilation Outputs
+bin/
+*.class
+scratch_test_classes/
+
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Logs & System files
+*.log
+.DS_Store
+Thumbs.db

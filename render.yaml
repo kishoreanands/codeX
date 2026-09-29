@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: codex
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run start:node
+    envVars:
+      - key: PORT
+        value: 3000

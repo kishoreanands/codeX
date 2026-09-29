@@ -1,0 +1,3 @@
+@echo off
+echo Executing CodeX Java Validation Tests...
+java -Dfile.encoding=UTF-8 -cp "bin;lib\gson-2.10.1.jar" com.codex.test.LanguageValidationTest

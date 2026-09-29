@@ -1,0 +1,802 @@
+[
+  {
+    "id": "python",
+    "name": "Python",
+    "extension": ".py",
+    "category": "General purpose",
+    "monacoId": "python",
+    "runnable": true
+  },
+  {
+    "id": "java",
+    "name": "Java",
+    "extension": ".java",
+    "category": "General purpose",
+    "monacoId": "java",
+    "runnable": true
+  },
+  {
+    "id": "c",
+    "name": "C",
+    "extension": ".c",
+    "category": "General purpose",
+    "monacoId": "c",
+    "runnable": true
+  },
+  {
+    "id": "cpp",
+    "name": "C++",
+    "extension": ".cpp",
+    "category": "General purpose",
+    "monacoId": "cpp",
+    "runnable": true
+  },
+  {
+    "id": "csharp",
+    "name": "C#",
+    "extension": ".cs",
+    "category": "General purpose",
+    "monacoId": "csharp",
+    "runnable": true
+  },
+  {
+    "id": "go",
+    "name": "Go",
+    "extension": ".go",
+    "category": "General purpose",
+    "monacoId": "go",
+    "runnable": true
+  },
+  {
+    "id": "rust",
+    "name": "Rust",
+    "extension": ".rs",
+    "category": "General purpose",
+    "monacoId": "rust",
+    "runnable": true
+  },
+  {
+    "id": "kotlin",
+    "name": "Kotlin",
+    "extension": ".kt",
+    "category": "General purpose",
+    "monacoId": "kotlin",
+    "runnable": true
+  },
+  {
+    "id": "swift",
+    "name": "Swift",
+    "extension": ".swift",
+    "category": "General purpose",
+    "monacoId": "swift",
+    "runnable": true
+  },
+  {
+    "id": "scala",
+    "name": "Scala",
+    "extension": ".scala",
+    "category": "General purpose",
+    "monacoId": "scala",
+    "runnable": true
+  },
+  {
+    "id": "ruby",
+    "name": "Ruby",
+    "extension": ".rb",
+    "category": "General purpose",
+    "monacoId": "ruby",
+    "runnable": true
+  },
+  {
+    "id": "php",
+    "name": "PHP",
+    "extension": ".php",
+    "category": "General purpose",
+    "monacoId": "php",
+    "runnable": true
+  },
+  {
+    "id": "perl",
+    "name": "Perl",
+    "extension": ".pl",
+    "category": "General purpose",
+    "monacoId": "perl",
+    "runnable": true
+  },
+  {
+    "id": "lua",
+    "name": "Lua",
+    "extension": ".lua",
+    "category": "General purpose",
+    "monacoId": "lua",
+    "runnable": true
+  },
+  {
+    "id": "dart",
+    "name": "Dart",
+    "extension": ".dart",
+    "category": "General purpose",
+    "monacoId": "dart",
+    "runnable": true
+  },
+  {
+    "id": "r-lang",
+    "name": "R",
+    "extension": ".r",
+    "category": "General purpose",
+    "monacoId": "r",
+    "runnable": true
+  },
+  {
+    "id": "julia",
+    "name": "Julia",
+    "extension": ".jl",
+    "category": "General purpose",
+    "monacoId": "julia",
+    "runnable": true
+  },
+  {
+    "id": "haskell",
+    "name": "Haskell",
+    "extension": ".hs",
+    "category": "General purpose",
+    "monacoId": "haskell",
+    "runnable": true
+  },
+  {
+    "id": "elixir",
+    "name": "Elixir",
+    "extension": ".ex",
+    "category": "General purpose",
+    "monacoId": "elixir",
+    "runnable": true
+  },
+  {
+    "id": "erlang",
+    "name": "Erlang",
+    "extension": ".erl",
+    "category": "General purpose",
+    "monacoId": "erlang",
+    "runnable": true
+  },
+  {
+    "id": "clojure",
+    "name": "Clojure",
+    "extension": ".clj",
+    "category": "General purpose",
+    "monacoId": "clojure",
+    "runnable": true
+  },
+  {
+    "id": "fsharp",
+    "name": "F#",
+    "extension": ".fs",
+    "category": "General purpose",
+    "monacoId": "fsharp",
+    "runnable": true
+  },
+  {
+    "id": "ocaml",
+    "name": "OCaml",
+    "extension": ".ml",
+    "category": "General purpose",
+    "monacoId": "ocaml",
+    "runnable": true
+  },
+  {
+    "id": "groovy",
+    "name": "Groovy",
+    "extension": ".groovy",
+    "category": "General purpose",
+    "monacoId": "groovy",
+    "runnable": true
+  },
+  {
+    "id": "objective-c",
+    "name": "Objective-C",
+    "extension": ".m",
+    "category": "General purpose",
+    "monacoId": "objective-c",
+    "runnable": true
+  },
+  {
+    "id": "vb",
+    "name": "Visual Basic",
+    "extension": ".vb",
+    "category": "General purpose",
+    "monacoId": "vb",
+    "runnable": true
+  },
+  {
+    "id": "pascal",
+    "name": "Pascal",
+    "extension": ".pas",
+    "category": "General purpose",
+    "monacoId": "pascal",
+    "runnable": true
+  },
+  {
+    "id": "fortran",
+    "name": "Fortran",
+    "extension": ".f90",
+    "category": "General purpose",
+    "monacoId": "fortran",
+    "runnable": true
+  },
+  {
+    "id": "cobol",
+    "name": "COBOL",
+    "extension": ".cbl",
+    "category": "General purpose",
+    "monacoId": "cobol",
+    "runnable": false
+  },
+  {
+    "id": "ada",
+    "name": "Ada",
+    "extension": ".adb",
+    "category": "General purpose",
+    "monacoId": "ada",
+    "runnable": true
+  },
+  {
+    "id": "lisp",
+    "name": "Lisp",
+    "extension": ".lisp",
+    "category": "General purpose",
+    "monacoId": "scheme",
+    "runnable": true
+  },
+  {
+    "id": "scheme",
+    "name": "Scheme",
+    "extension": ".scm",
+    "category": "General purpose",
+    "monacoId": "scheme",
+    "runnable": true
+  },
+  {
+    "id": "prolog",
+    "name": "Prolog",
+    "extension": ".pl",
+    "category": "General purpose",
+    "monacoId": "prolog",
+    "runnable": true
+  },
+  {
+    "id": "nim",
+    "name": "Nim",
+    "extension": ".nim",
+    "category": "General purpose",
+    "monacoId": "nim",
+    "runnable": true
+  },
+  {
+    "id": "zig",
+    "name": "Zig",
+    "extension": ".zig",
+    "category": "General purpose",
+    "monacoId": "zig",
+    "runnable": true
+  },
+  {
+    "id": "crystal",
+    "name": "Crystal",
+    "extension": ".cr",
+    "category": "General purpose",
+    "monacoId": "ruby",
+    "runnable": true
+  },
+  {
+    "id": "html",
+    "name": "HTML",
+    "extension": ".html",
+    "category": "Frontend",
+    "monacoId": "html",
+    "runnable": true
+  },
+  {
+    "id": "css",
+    "name": "CSS",
+    "extension": ".css",
+    "category": "Frontend",
+    "monacoId": "css",
+    "runnable": true
+  },
+  {
+    "id": "scss",
+    "name": "SCSS",
+    "extension": ".scss",
+    "category": "Frontend",
+    "monacoId": "scss",
+    "runnable": true
+  },
+  {
+    "id": "javascript",
+    "name": "JavaScript",
+    "extension": ".js",
+    "category": "Frontend",
+    "monacoId": "javascript",
+    "runnable": true
+  },
+  {
+    "id": "typescript",
+    "name": "TypeScript",
+    "extension": ".ts",
+    "category": "Frontend",
+    "monacoId": "typescript",
+    "runnable": true
+  },
+  {
+    "id": "react",
+    "name": "React",
+    "extension": ".jsx",
+    "category": "Frontend",
+    "monacoId": "javascript",
+    "runnable": true
+  },
+  {
+    "id": "angular",
+    "name": "Angular",
+    "extension": ".component.ts",
+    "category": "Frontend",
+    "monacoId": "typescript",
+    "runnable": true
+  },
+  {
+    "id": "vue",
+    "name": "Vue",
+    "extension": ".vue",
+    "category": "Frontend",
+    "monacoId": "html",
+    "runnable": true
+  },
+  {
+    "id": "svelte",
+    "name": "Svelte",
+    "extension": ".svelte",
+    "category": "Frontend",
+    "monacoId": "html",
+    "runnable": true
+  },
+  {
+    "id": "nextjs",
+    "name": "Next.js",
+    "extension": ".tsx",
+    "category": "Frontend",
+    "monacoId": "typescript",
+    "runnable": true
+  },
+  {
+    "id": "jquery",
+    "name": "jQuery",
+    "extension": ".js",
+    "category": "Frontend",
+    "monacoId": "javascript",
+    "runnable": true
+  },
+  {
+    "id": "tailwind",
+    "name": "Tailwind",
+    "extension": ".html",
+    "category": "Frontend",
+    "monacoId": "html",
+    "runnable": true
+  },
+  {
+    "id": "bootstrap",
+    "name": "Bootstrap",
+    "extension": ".html",
+    "category": "Frontend",
+    "monacoId": "html",
+    "runnable": true
+  },
+  {
+    "id": "nodejs",
+    "name": "Node.js",
+    "extension": ".js",
+    "category": "Backend/frameworks",
+    "monacoId": "javascript",
+    "runnable": true
+  },
+  {
+    "id": "express",
+    "name": "Express",
+    "extension": ".js",
+    "category": "Backend/frameworks",
+    "monacoId": "javascript",
+    "runnable": true
+  },
+  {
+    "id": "django",
+    "name": "Django",
+    "extension": ".py",
+    "category": "Backend/frameworks",
+    "monacoId": "python",
+    "runnable": true
+  },
+  {
+    "id": "flask",
+    "name": "Flask",
+    "extension": ".py",
+    "category": "Backend/frameworks",
+    "monacoId": "python",
+    "runnable": true
+  },
+  {
+    "id": "fastapi",
+    "name": "FastAPI",
+    "extension": ".py",
+    "category": "Backend/frameworks",
+    "monacoId": "python",
+    "runnable": true
+  },
+  {
+    "id": "springboot",
+    "name": "Spring Boot",
+    "extension": ".java",
+    "category": "Backend/frameworks",
+    "monacoId": "java",
+    "runnable": true
+  },
+  {
+    "id": "aspnet",
+    "name": "ASP.NET",
+    "extension": ".cs",
+    "category": "Backend/frameworks",
+    "monacoId": "csharp",
+    "runnable": true
+  },
+  {
+    "id": "laravel",
+    "name": "Laravel",
+    "extension": ".php",
+    "category": "Backend/frameworks",
+    "monacoId": "php",
+    "runnable": true
+  },
+  {
+    "id": "rails",
+    "name": "Ruby on Rails",
+    "extension": ".rb",
+    "category": "Backend/frameworks",
+    "monacoId": "ruby",
+    "runnable": true
+  },
+  {
+    "id": "nestjs",
+    "name": "NestJS",
+    "extension": ".ts",
+    "category": "Backend/frameworks",
+    "monacoId": "typescript",
+    "runnable": true
+  },
+  {
+    "id": "gin",
+    "name": "Gin",
+    "extension": ".go",
+    "category": "Backend/frameworks",
+    "monacoId": "go",
+    "runnable": true
+  },
+  {
+    "id": "mysql",
+    "name": "MySQL",
+    "extension": ".sql",
+    "category": "Database",
+    "monacoId": "sql",
+    "runnable": true
+  },
+  {
+    "id": "postgresql",
+    "name": "PostgreSQL",
+    "extension": ".sql",
+    "category": "Database",
+    "monacoId": "sql",
+    "runnable": true
+  },
+  {
+    "id": "sqlite",
+    "name": "SQLite",
+    "extension": ".sql",
+    "category": "Database",
+    "monacoId": "sql",
+    "runnable": true
+  },
+  {
+    "id": "oracle",
+    "name": "Oracle PL/SQL",
+    "extension": ".pls",
+    "category": "Database",
+    "monacoId": "sql",
+    "runnable": true
+  },
+  {
+    "id": "tsql",
+    "name": "SQL Server T-SQL",
+    "extension": ".sql",
+    "category": "Database",
+    "monacoId": "sql",
+    "runnable": true
+  },
+  {
+    "id": "mongodb",
+    "name": "MongoDB",
+    "extension": ".js",
+    "category": "Database",
+    "monacoId": "javascript",
+    "runnable": true
+  },
+  {
+    "id": "redis",
+    "name": "Redis",
+    "extension": ".redis",
+    "category": "Database",
+    "monacoId": "redis",
+    "runnable": true
+  },
+  {
+    "id": "cassandra",
+    "name": "Cassandra",
+    "extension": ".cql",
+    "category": "Database",
+    "monacoId": "sql",
+    "runnable": true
+  },
+  {
+    "id": "firebase",
+    "name": "Firebase",
+    "extension": ".json",
+    "category": "Database",
+    "monacoId": "json",
+    "runnable": false
+  },
+  {
+    "id": "graphql",
+    "name": "GraphQL",
+    "extension": ".graphql",
+    "category": "Database",
+    "monacoId": "graphql",
+    "runnable": true
+  },
+  {
+    "id": "android",
+    "name": "Android (Kotlin/Java)",
+    "extension": ".kt",
+    "category": "Mobile",
+    "monacoId": "kotlin",
+    "runnable": true
+  },
+  {
+    "id": "ios",
+    "name": "iOS (Swift)",
+    "extension": ".swift",
+    "category": "Mobile",
+    "monacoId": "swift",
+    "runnable": true
+  },
+  {
+    "id": "flutter",
+    "name": "Flutter",
+    "extension": ".dart",
+    "category": "Mobile",
+    "monacoId": "dart",
+    "runnable": true
+  },
+  {
+    "id": "react-native",
+    "name": "React Native",
+    "extension": ".tsx",
+    "category": "Mobile",
+    "monacoId": "typescript",
+    "runnable": true
+  },
+  {
+    "id": "bash",
+    "name": "Bash",
+    "extension": ".sh",
+    "category": "Scripting/DevOps",
+    "monacoId": "shell",
+    "runnable": true
+  },
+  {
+    "id": "powershell",
+    "name": "PowerShell",
+    "extension": ".ps1",
+    "category": "Scripting/DevOps",
+    "monacoId": "powershell",
+    "runnable": true
+  },
+  {
+    "id": "batch",
+    "name": "Batch",
+    "extension": ".bat",
+    "category": "Scripting/DevOps",
+    "monacoId": "bat",
+    "runnable": true
+  },
+  {
+    "id": "docker",
+    "name": "Docker",
+    "extension": ".dockerfile",
+    "category": "Scripting/DevOps",
+    "monacoId": "dockerfile",
+    "runnable": false
+  },
+  {
+    "id": "kubernetes",
+    "name": "Kubernetes YAML",
+    "extension": ".k8s.yaml",
+    "category": "Scripting/DevOps",
+    "monacoId": "yaml",
+    "runnable": false
+  },
+  {
+    "id": "terraform",
+    "name": "Terraform",
+    "extension": ".tf",
+    "category": "Scripting/DevOps",
+    "monacoId": "hcl",
+    "runnable": false
+  },
+  {
+    "id": "ansible",
+    "name": "Ansible",
+    "extension": ".ansible.yaml",
+    "category": "Scripting/DevOps",
+    "monacoId": "yaml",
+    "runnable": false
+  },
+  {
+    "id": "github-actions",
+    "name": "GitHub Actions YAML",
+    "extension": ".github-ci.yml",
+    "category": "Scripting/DevOps",
+    "monacoId": "yaml",
+    "runnable": false
+  },
+  {
+    "id": "makefile",
+    "name": "Makefile",
+    "extension": ".mk",
+    "category": "Scripting/DevOps",
+    "monacoId": "makefile",
+    "runnable": true
+  },
+  {
+    "id": "python-ai",
+    "name": "Python (NumPy, Pandas, TensorFlow, PyTorch)",
+    "extension": ".py",
+    "category": "Data/AI/ML",
+    "monacoId": "python",
+    "runnable": true
+  },
+  {
+    "id": "r-data",
+    "name": "R (Data Science)",
+    "extension": ".r",
+    "category": "Data/AI/ML",
+    "monacoId": "r",
+    "runnable": true
+  },
+  {
+    "id": "matlab",
+    "name": "MATLAB",
+    "extension": ".m",
+    "category": "Data/AI/ML",
+    "monacoId": "matlab",
+    "runnable": true
+  },
+  {
+    "id": "jupyter",
+    "name": "Jupyter",
+    "extension": ".ipynb",
+    "category": "Data/AI/ML",
+    "monacoId": "json",
+    "runnable": false
+  },
+  {
+    "id": "assembly",
+    "name": "Assembly (x86/ARM)",
+    "extension": ".asm",
+    "category": "Systems/embedded",
+    "monacoId": "assembly",
+    "runnable": false
+  },
+  {
+    "id": "verilog",
+    "name": "Verilog",
+    "extension": ".v",
+    "category": "Systems/embedded",
+    "monacoId": "verilog",
+    "runnable": false
+  },
+  {
+    "id": "vhdl",
+    "name": "VHDL",
+    "extension": ".vhd",
+    "category": "Systems/embedded",
+    "monacoId": "vhdl",
+    "runnable": false
+  },
+  {
+    "id": "arduino",
+    "name": "Arduino C++",
+    "extension": ".ino",
+    "category": "Systems/embedded",
+    "monacoId": "cpp",
+    "runnable": true
+  },
+  {
+    "id": "micropython",
+    "name": "MicroPython",
+    "extension": ".py",
+    "category": "Systems/embedded",
+    "monacoId": "python",
+    "runnable": true
+  },
+  {
+    "id": "json",
+    "name": "JSON",
+    "extension": ".json",
+    "category": "Other",
+    "monacoId": "json",
+    "runnable": false
+  },
+  {
+    "id": "xml",
+    "name": "XML",
+    "extension": ".xml",
+    "category": "Other",
+    "monacoId": "xml",
+    "runnable": false
+  },
+  {
+    "id": "yaml",
+    "name": "YAML",
+    "extension": ".yaml",
+    "category": "Other",
+    "monacoId": "yaml",
+    "runnable": false
+  },
+  {
+    "id": "markdown",
+    "name": "Markdown",
+    "extension": ".md",
+    "category": "Other",
+    "monacoId": "markdown",
+    "runnable": false
+  },
+  {
+    "id": "latex",
+    "name": "LaTeX",
+    "extension": ".tex",
+    "category": "Other",
+    "monacoId": "latex",
+    "runnable": false
+  },
+  {
+    "id": "regex",
+    "name": "Regex",
+    "extension": ".regex",
+    "category": "Other",
+    "monacoId": "regex",
+    "runnable": false
+  },
+  {
+    "id": "solidity",
+    "name": "Solidity",
+    "extension": ".sol",
+    "category": "Other",
+    "monacoId": "solidity",
+    "runnable": true
+  },
+  {
+    "id": "wasm",
+    "name": "WebAssembly",
+    "extension": ".wat",
+    "category": "Other",
+    "monacoId": "wasm",
+    "runnable": false
+  }
+]
