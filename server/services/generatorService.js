@@ -38,12 +38,12 @@ function detectHumanLanguage(text) {
     if (text.includes('є') || text.includes('і') || text.includes('ї')) return languageService.getHumanLanguage('uk');
     return languageService.getHumanLanguage('ru');
   }
+  // Japanese (Hiragana / Katakana) - must be checked before Han/Chinese
+  if (/[\u3040-\u309F\u30A0-\u30FF]/.test(text)) return languageService.getHumanLanguage('ja');
   // Han / Chinese
   if (/[\u4E00-\u9FFF]/.test(text)) {
     return languageService.getHumanLanguage('zh-CN');
   }
-  // Japanese (Hiragana / Katakana)
-  if (/[\u3040-\u309F\u30A0-\u30FF]/.test(text)) return languageService.getHumanLanguage('ja');
   // Korean (Hangul)
   if (/[\uAC00-\uD7AF]/.test(text)) return languageService.getHumanLanguage('ko');
   // Thai
@@ -53,10 +53,27 @@ function detectHumanLanguage(text) {
 
   // Latin fallback
   const lower = text.toLowerCase();
-  if (lower.includes(' el ') || lower.includes(' la ') || lower.includes(' por favor ') || lower.includes('función')) return languageService.getHumanLanguage('es');
-  if (lower.includes(' le ') || lower.includes(' et ') || lower.includes(' pour ') || lower.includes('fonction')) return languageService.getHumanLanguage('fr');
-  if (lower.includes(' und ') || lower.includes(' der ') || lower.includes(' bitte ') || lower.includes('funktion')) return languageService.getHumanLanguage('de');
-  if (lower.includes(' e ') || lower.includes(' per ') || lower.includes(' grazie ') || lower.includes('funzione')) return languageService.getHumanLanguage('it');
+  // German (die, der, das, und, finde, größte, zahlen, etc.)
+  if (lower.includes(' und ') || lower.includes(' der ') || lower.includes(' die ') || lower.includes(' das ') || 
+      lower.includes(' bitte ') || lower.includes('funktion') || lower.includes('finde') || lower.includes('größte') || 
+      lower.includes('unter drei') || lower.includes('zahlen') || /[äöüß]/.test(lower)) {
+    return languageService.getHumanLanguage('de');
+  }
+  // Spanish (el, la, los, las, calcular, mayor, número, etc.)
+  if (lower.includes(' el ') || lower.includes(' la ') || lower.includes(' los ') || lower.includes(' las ') || 
+      lower.includes(' por favor ') || lower.includes('función') || lower.includes('calcular') || 
+      lower.includes('mayor') || lower.includes('número') || lower.includes('tres números')) {
+    return languageService.getHumanLanguage('es');
+  }
+  // French (le, la, les, et, pour, fonction, trouver, plus grand, nombre, etc.)
+  if (lower.includes(' le ') || lower.includes(' et ') || lower.includes(' pour ') || lower.includes('fonction') || 
+      lower.includes('trouver') || lower.includes('plus grand') || lower.includes('parmi') || lower.includes('nombres')) {
+    return languageService.getHumanLanguage('fr');
+  }
+  // Italian
+  if (lower.includes(' e ') || lower.includes(' per ') || lower.includes(' grazie ') || lower.includes('funzione') || lower.includes('trova') || lower.includes('maggiore')) {
+    return languageService.getHumanLanguage('it');
+  }
 
   return languageService.getHumanLanguage('en') || { code: 'en', name: 'English', nativeName: 'English', direction: 'ltr' };
 }
@@ -284,28 +301,36 @@ INSERT INTO items (user_id, title, description) VALUES (1, 'Initial Record', 'Cr
           name: 'App.tsx',
           extension: '.tsx',
           monacoId: 'typescript',
-          content: frontendCode
+          language: 'typescript',
+          content: frontendCode,
+          code: frontendCode
         },
         {
           tag: 'backend',
           name: 'server.js',
           extension: '.js',
           monacoId: 'javascript',
-          content: backendCode
+          language: 'javascript',
+          content: backendCode,
+          code: backendCode
         },
         {
           tag: 'database',
           name: 'schema.sql',
           extension: '.sql',
           monacoId: 'sql',
-          content: databaseCode
+          language: 'sql',
+          content: databaseCode,
+          code: databaseCode
         },
         {
           tag: 'humancode',
           name: 'Main.java',
           extension: '.java',
           monacoId: 'java',
-          content: generateSingleFileCode(prompt, { id: 'java', name: 'Java', extension: '.java' }, humanLang, 'main')
+          language: 'java',
+          content: generateSingleFileCode(prompt, { id: 'java', name: 'Java', extension: '.java' }, humanLang, 'main'),
+          code: generateSingleFileCode(prompt, { id: 'java', name: 'Java', extension: '.java' }, humanLang, 'main')
         }
       ],
       explanation: explain
@@ -317,7 +342,11 @@ INSERT INTO items (user_id, title, description) VALUES (1, 'Initial Record', 'Cr
   // Single File generation
   const format = codeFormat || 'main';
   const isJava = codeLang.id === 'java' || codeLang.id === 'springboot';
-  const fileName = isJava && format !== 'enterprise' ? 'Main.java' : `solution${codeLang.extension}`;
+  const fileName = isJava && format !== 'enterprise' 
+    ? 'Main.java' 
+    : (isJava && format === 'enterprise' 
+      ? 'Solution.java' 
+      : `solution${codeLang.extension}`);
   const singleFileContent = generateSingleFileCode(prompt, codeLang, humanLang, format);
 
   return {

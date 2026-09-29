@@ -677,13 +677,13 @@ public class Solution {
         if (Pattern.compile("[\\u0400-\\u04FF]").matcher(text).find()) {
             return languageService.getHumanLanguage("ru");
         }
-        // Chinese
-        if (Pattern.compile("[\\u4E00-\\u9FFF]").matcher(text).find()) {
-            return languageService.getHumanLanguage("zh-CN");
-        }
         // Japanese
         if (Pattern.compile("[\\u3040-\\u309F\\u30A0-\\u30FF]").matcher(text).find()) {
             return languageService.getHumanLanguage("ja");
+        }
+        // Chinese
+        if (Pattern.compile("[\\u4E00-\\u9FFF]").matcher(text).find()) {
+            return languageService.getHumanLanguage("zh-CN");
         }
 
         return languageService.getHumanLanguage("en");

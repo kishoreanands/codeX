@@ -6,7 +6,7 @@
   "scripts": {
     "compile:java": "javac -encoding UTF-8 -cp \"lib/gson-2.10.1.jar\" -d bin src/com/codex/model/*.java src/com/codex/service/*.java src/com/codex/handler/*.java src/com/codex/*.java src/com/codex/test/*.java",
     "test:java": "java -Dfile.encoding=UTF-8 -cp \"bin;lib/gson-2.10.1.jar\" com.codex.test.LanguageValidationTest",
-    "test:node": "node --test tests/validateLanguages.test.js tests/languageService.test.js tests/polyglotEngine.test.js",
+    "test:node": "node --test tests/validateLanguages.test.js tests/languageService.test.js tests/polyglotEngine.test.js tests/stressTestThousandsQueries.test.js",
     "test": "java -Dfile.encoding=UTF-8 -cp \"bin;lib/gson-2.10.1.jar\" com.codex.test.LanguageValidationTest",
     "start": "java -Dfile.encoding=UTF-8 -cp \"bin;lib/gson-2.10.1.jar\" com.codex.Main",
     "start:node": "node server/server.js",
